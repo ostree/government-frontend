@@ -11,4 +11,16 @@
 .app-c-publisher-metadata__term {
   float: left;
   padding-right: $gutter-one-third / 2;
+
+  .direction-rtl & {
+    float: none;
+    display: inline-block;
+  }
+}
+
+.app-c-publisher-metadata__definition {
+  .direction-rtl & {
+    float: none;
+    display: inline-block;
+  }
 }
