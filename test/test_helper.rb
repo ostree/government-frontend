@@ -174,7 +174,7 @@ class ActionDispatch::IntegrationTest
 
   def visit_with_cachebust(visit_uri)
     uri = Addressable::URI.parse(visit_uri)
-    uri.query_values = uri.query_values.yield_self { |values| (values || {}).merge(cachebust: rand) }
+    #uri.query_values = uri.query_values.yield_self { |values| (values || {}).merge(cachebust: rand) }
 
     puts uri
     visit(uri)
