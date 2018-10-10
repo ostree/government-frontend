@@ -14,6 +14,7 @@ describe('A radio group tracker', function () {
 
   beforeEach(function () {
     spyOn(GOVUK.analytics, 'trackEvent')
+    spyOn(GOVUK.analytics, 'addLinkedTrackerDomain')
 
     element = $(
       '<div>' +
@@ -152,28 +153,25 @@ describe('A radio group tracker', function () {
   })
 
   describe('cross domain tracking enabled', function () {
-    var $form, $radioInput
-
     beforeEach(function () {
       tracker.trackVerifyUser(element, { status: 'OK', value: true })
 
-      spyOn(GOVUK.analytics, 'addLinkedTrackerDomain')
+      element.attr('data-tracking-code', 'UA-xxxxxx')
+      element.attr('data-tracking-domain', 'test.service.gov.uk')
+      element.attr('data-tracking-name', 'testTracker')
 
-      var $form = element.find('form')
-      $form.attr('data-tracking-code', 'UA-xxxxxx')
-      $form.attr('data-tracking-name', 'testTracker')
+      element.find('input[value="govuk-verify"]').trigger('click')
+      element.find('form').trigger('submit')
 
-      var $radioInput = element.find('input[value="govuk-verify"]')
-      $radioInput.attr('data-tracking-url', 'https://test.service.gov.uk')
-
-      $radioInput.trigger('click')
-      $form.trigger('submit')
+      tracker = new GOVUK.Modules.TrackRadioGroup()
+      tracker.start(element)
     })
 
-    it('adds a linked tracker', function () {
+    it('adds a linked tracker, once', function () {
       expect(GOVUK.analytics.addLinkedTrackerDomain).toHaveBeenCalledWith(
         'UA-xxxxxx', 'testTracker', 'test.service.gov.uk'
       )
+      expect(GOVUK.analytics.addLinkedTrackerDomain.calls.count()).toBe(1)
     })
 
     it('sends an event to the linked tracker', function() {

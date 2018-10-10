@@ -10,6 +10,10 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
     this.start = function (element) {
       track(element)
 
+      if (crossDomainEnabled(element)) {
+        addCrossDomainTracking(element)
+      }
+
       checkVerifyUser(element)
     }
 
@@ -24,8 +28,10 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
 
         GOVUK.analytics.trackEvent('Radio button chosen', eventTrackingValue($checkedOption, withHint), options)
 
-        if (typeof $submittedForm.attr('data-tracking-code') !== 'undefined') {
-          addCrossDomainTracking($submittedForm, $checkedOption, options, withHint)
+        if (crossDomainEnabled(element)) {
+          var name = element.attr('data-tracking-name')
+          var eventOptions = $.extend({ 'trackerName': name }, options)
+          GOVUK.analytics.trackEvent('Radio button chosen', eventTrackingValue($checkedOption, withHint), eventOptions)
         }
       })
     }
@@ -65,15 +71,20 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
       return value
     }
 
-    function addCrossDomainTracking(element, $checkedOption, options, withHint) {
+    function addCrossDomainTracking(element) {
       var code = element.attr('data-tracking-code')
+      var domain = element.attr('data-tracking-domain')
       var name = element.attr('data-tracking-name')
-      var url = $checkedOption.attr('data-tracking-url')
-      var hostname = $('<a>').prop('href', url).prop('hostname')
-      var eventOptions = $.extend({ 'trackerName': name }, options)
 
-      GOVUK.analytics.addLinkedTrackerDomain(code, name, hostname)
-      GOVUK.analytics.trackEvent('Radio button chosen', eventTrackingValue($checkedOption, withHint), eventOptions)
+      GOVUK.analytics.addLinkedTrackerDomain(code, name, domain)
+    }
+
+    function crossDomainEnabled(element) {
+      return (
+        typeof element.attr('data-tracking-code') !== 'undefined' &&
+        typeof element.attr('data-tracking-domain') !== 'undefined' &&
+        typeof element.attr('data-tracking-name') !== 'undefined'
+      )
     }
   }
 })(window, window.GOVUK);
