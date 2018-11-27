@@ -5,9 +5,11 @@
   last_updated ||= false
   link_to_history ||= false
   history_class = "app-c-published-dates--history" if history.any?
+  margin_bottom ||= 0
+  margin_bottom_class = "app-c-published-dates--margin-bottom-#{margin_bottom}" if [4, 5].include? margin_bottom
 %>
 <% if published || last_updated %>
-<div class="app-c-published-dates <%= history_class %>" <% if history.any? %>id="history" data-module="toggle"<% end %>>
+<div class="app-c-published-dates <%= history_class %> <%= margin_bottom_class %>" <% if history.any? %>id="history" data-module="toggle"<% end %>>
   <% if published %>
     <%= t('components.published_dates.published', date: published) %>
   <% end %>

@@ -12,6 +12,16 @@ examples:
   default:
     data:
       published: 1st January 1990
+  with_margin:
+    description: |
+      Configurable bottom margin for the component. This has been built in anticipation of being compatible with a
+      theoretical future model for component margins.
+
+      Accepted parameters for this option are and 4 (gutter) and 5 (responsive margin). See the Sass file for
+      more detail.
+    data:
+      published: 1st January 1990
+      margin_bottom: 4
   just_last_updated_date:
     data:
       last_updated: 20th October 2016

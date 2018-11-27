@@ -75,4 +75,23 @@ class PublishedDatesTest < ComponentTestCase
     assert_select ".app-c-published-dates--history a[href=\"#full-history\"][data-controls=\"full-history\"]"
     assert_select ".app-c-published-dates--history a[href=\"#full-history\"][data-expanded=\"false\"]"
   end
+
+  test 'adds margin 0' do
+    render_component published: '1st November 2000', margin_bottom: 0
+
+    assert_select '.app-c-published-dates.app-c-published-dates--margin-bottom-4', false
+    assert_select '.app-c-published-dates.app-c-published-dates--margin-bottom-5', false
+  end
+
+  test 'adds margin 4' do
+    render_component published: '1st November 2000', margin_bottom: 4
+
+    assert_select '.app-c-published-dates.app-c-published-dates--margin-bottom-4'
+  end
+
+  test 'adds margin 5' do
+    render_component published: '1st November 2000', margin_bottom: 5
+
+    assert_select '.app-c-published-dates.app-c-published-dates--margin-bottom-5'
+  end
 end
