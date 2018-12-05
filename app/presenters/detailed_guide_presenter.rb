@@ -4,6 +4,7 @@ class DetailedGuidePresenter < ContentItemPresenter
   include ContentItem::Metadata
   include ContentItem::NationalApplicability
   include ContentItem::Political
+  include ContentItem::Brexit
   include ContentItem::TitleAndContext
 
   def title_and_context

@@ -76,4 +76,16 @@ class DetailedGuidePresenterTest < PresenterTestCase
     }
     assert_equal presented.logo, expected
   end
+
+  test 'has_brexit_update is set correctly' do
+    presented = presented_item("political_detailed_guide")
+
+    assert presented.has_brexit_update?
+  end
+
+  test 'has_brexit_update is set correctly when it is not defined' do
+    presented = presented_item('england-2014-to-2020-european-structural-and-investment-funds')
+
+    refute presented.has_brexit_update?
+  end
 end
