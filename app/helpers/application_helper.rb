@@ -1,4 +1,24 @@
 module ApplicationHelper
+
+  def page_title(*title_parts)
+    # This helper may be called multiple times on the
+    # same page, with or without the necessary arguments
+    # to construct the title (e.g. on a nested form).
+    # rubocop:disable Rails/HelperInstanceVariable
+    if title_parts.any?
+      title_parts.push("Admin") if params[:controller].match?(/^admin\//)
+      title_parts.push("GOV.UK")
+      @page_title = title_parts.reject(&:blank?).join(" - ")
+    else
+      @page_title
+    end
+    # rubocop:enable Rails/HelperInstanceVariable
+  end
+
+  def page_class(css_class)
+    content_for(:page_class, css_class)
+  end
+  
   def page_text_direction
     I18n.t("i18n.direction", locale: I18n.locale, default: "ltr")
   end

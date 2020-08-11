@@ -3,7 +3,7 @@ class ContentItemsController < ApplicationController
   rescue_from GdsApi::HTTPNotFound, with: :error_notfound
   rescue_from GdsApi::HTTPGone, with: :error_410
   rescue_from GdsApi::InvalidUrl, with: :error_notfound
-  rescue_from ActionView::MissingTemplate, with: :error_406
+  #rescue_from ActionView::MissingTemplate, with: :error_406
   rescue_from ActionController::UnknownFormat, with: :error_406
   rescue_from PresenterBuilder::RedirectRouteReturned, with: :error_redirect
   rescue_from PresenterBuilder::SpecialRouteReturned, with: :error_notfound
@@ -46,6 +46,15 @@ class ContentItemsController < ApplicationController
 
 private
 
+  def get_involved
+    #@open_consultation_count = Consultation.published.open.count
+    #@closed_consultation_count = Consultation.published.closed_at_or_after(1.year.ago).count
+    #@next_closing_consultations = decorate_collection(Consultation.published.open.order("closing_at asc").limit(1), PublicationesquePresenter)
+    #@recently_opened_consultations = decorate_collection(Consultation.published.open.order("opening_at desc").limit(3), PublicationesquePresenter)
+    #@recent_consultation_outcomes = decorate_collection(Consultation.published.closed.responded.order("closing_at desc").limit(3), PublicationesquePresenter)
+    #@take_part_pages = TakePartPage.in_order
+  end
+
   def is_history_page?
     @content_item.document_type == "history"
   end
@@ -59,12 +68,17 @@ private
       king_charles_street
       lancaster_house
       history
+      get_involved
     ]
 
     if valid_page_ids.include?(page_id)
       @do_not_show_breadcrumbs = true
 
-      render template: "histories/#{page_id}"
+      if page_id == "get_involved"
+        render template: "content_items/#{page_id}"
+      else
+        render template: "histories/#{page_id}"
+      end
     else
       render plain: "Not found", status: :not_found
     end
@@ -185,7 +199,7 @@ private
   end
 
   def error_406
-    render plain: "Not acceptable", status: :not_acceptable
+    #render plain: "Not acceptable", status: :not_acceptable
   end
 
   def error_410
