@@ -40,6 +40,7 @@ group :test do
   gem "govuk_test"
   gem "minitest-reporters"
   gem "mocha"
+  gem "simplecov"
   gem "webdrivers"
   gem "webmock", require: false
 end
